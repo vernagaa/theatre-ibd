@@ -1,0 +1,124 @@
+/*
+ * @(#)PlacesDispoServlet.java	1.0 2007/10/31
+ * 
+ * Copyright (c) 2007 Sara Bouchenak.
+ */
+
+import accesBD.BDPlaces;
+import accesBD.BDRepresentations;
+import accesBD.BDSpectacles;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
+import modele.Place;
+import modele.Representation;
+import modele.Spectacle;
+import modele.Utilisateur;
+import utils.Utilitaires;
+
+/**
+ * Places Dispo Servlet.
+ */
+public class PlacesDispoServlet extends HttpServlet {
+
+	/**
+	 * HTTP GET request entry point.
+	 *
+	 * @param req	an HttpServletRequest object that contains the request 
+	 *			the client has made of the servlet
+	 * @param res	an HttpServletResponse object that contains the response 
+	 *			the servlet sends to the client
+	 *
+	 * @throws ServletException   if the request for the GET could not be handled
+	 * @throws IOException	   if an input or output error is detected 
+	 *					   when the servlet handles the GET request
+	 */
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		//TODO rendre moins dégueulasse
+		ServletOutputStream out = res.getOutputStream();
+		utils.Constantes.Home = getServletContext().getRealPath("/");
+
+		res.setContentType("text/html");
+
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
+		out.println("<head><title> Programme de la saison </title></head>");
+		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
+		out.println("<font color=\"#FFFFFF\"><h1> Programme de la saison </h1>");
+
+		// Ecrire une nouvelle servlet qui permet de consulter l'ensemble
+		// des places disponibles pour une représentation donnée, chaque place étant décrite par
+		// le numéro du rang et le numéro de place dans le rang. Intégrer cette servlet à l'application et la tester.
+
+		try {
+			Utilisateur user = Utilitaires.Identification();
+			if (user != null) {
+				if (req.getParameter("spectacle") != null && req.getParameter("date") != null) {
+					int specId = Integer.parseInt(req.getParameter("spectacle"));
+					String date = req.getParameter("date");
+
+					Representation repres = BDRepresentations.getRepresentation(user, specId, Utilitaires.toDate(date, "dd-MM-yyyy HH:mm"));
+					Spectacle spectacle = BDSpectacles.getSpectacle(user, specId);
+
+					if (repres != null && spectacle != null) {
+						out.println("<h3>Places disponibles pour la représentation du spectacle " + spectacle.getNom() + " (" + Utilitaires.toString(repres.getDate()) + ") :</h3>");
+						out.println("<ul>");
+
+						List<Place> places = BDPlaces.getPlacesLibres(user, specId, Utilitaires.toDate(date, "dd-MM-yyyy HH:mm"));
+						for (Place p : places) {
+							out.println("<li>place " + p.getNoPlace() + " rang " + p.getNoRang() + " zone " + p.getCategorie() + "</li>");
+						}
+						out.println("</ul>");
+					} else if (repres == null) {
+						out.println("<p>représentation nulle</p>");
+					}
+					if (spectacle == null) {
+						out.println("<p>spectacle nul</p>");
+					}
+				}
+			}
+		} catch (Exception e) {
+			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + "</p>");
+		}
+
+
+
+		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
+		out.println("</body>");
+		out.println("<html>");
+		out.close();
+
+	}
+
+	/**
+	 * HTTP POST request entry point.
+	 *
+	 * @param req	an HttpServletRequest object that contains the request 
+	 *			the client has made of the servlet
+	 * @param res	an HttpServletResponse object that contains the response 
+	 *			the servlet sends to the client
+	 *
+	 * @throws ServletException   if the request for the POST could not be handled
+	 * @throws IOException	   if an input or output error is detected 
+	 *					   when the servlet handles the POST request
+	 */
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		doGet(req, res);
+	}
+
+	/**
+	 * Returns information about this servlet.
+	 *
+	 * @return String information about this servlet
+	 */
+	@Override
+	public String getServletInfo() {
+		return "Retourne les places disponibles d'une représentation donnée";
+	}
+}
