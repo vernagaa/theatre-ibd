@@ -5,10 +5,13 @@
  */
 
 import accesBD.BDRepresentations;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Date;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import modele.Utilisateur;
 import utils.Utilitaires;
 
@@ -46,6 +49,10 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		out.println("<html>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
 		out.println("<head><title> Ajouter une nouvelle représentation </title></head>");
+		out.println("<style>"
+				+ "a {color: black; font-weight: bold;}"
+				+ "a:hover {color: red;}"
+				+ "</style>");
 		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
 		out.println("<font color=\"#FFFFFF\"><h1> Ajouter une nouvelle repr&eacute;sentation </h1>");
 

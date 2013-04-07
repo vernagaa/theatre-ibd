@@ -6,10 +6,13 @@
 
 import accesBD.BDRepresentations;
 import accesBD.BDSpectacles;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import modele.Representation;
 import modele.Spectacle;
 import modele.Utilisateur;
@@ -49,6 +52,10 @@ public class ProgrammeServlet extends HttpServlet {
 		out.println("<html>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
 		out.println("<head><title> Programme de la saison </title></head>");
+		out.println("<style>"
+				+ "a {color: black; font-weight: bold;}"
+				+ "a:hover {color: red;}"
+				+ "</style>");
 		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
 		out.println("<font color=\"#FFFFFF\"><h1> Programme de la saison </h1>");
 
