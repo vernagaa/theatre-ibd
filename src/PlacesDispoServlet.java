@@ -95,6 +95,7 @@ public class PlacesDispoServlet extends HttpServlet {
 
 
 		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
+		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/servlet/ProgrammeServlet\">Programme</a></p>");
 		out.println("</body>");
 		out.println("<html>");
 		out.close();

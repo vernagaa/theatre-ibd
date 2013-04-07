@@ -1,15 +1,13 @@
 package accesBD;
 
+import exceptions.ExceptionConnexion;
+import exceptions.RepresentationException;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import exceptions.RepresentationException;
-import exceptions.ExceptionConnexion;
-
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,9 +15,6 @@ import modele.Representation;
 import modele.Utilisateur;
 
 public class BDRepresentations {
-
-	public BDRepresentations() {
-	}
 
 	/**
 	 * retourne la liste des catégories définies dans la bd

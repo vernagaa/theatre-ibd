@@ -4,8 +4,10 @@
  */
 
 import accesBD.BDCategories;
+import accesBD.BDPlaces;
 import accesBD.BDRepresentations;
 import accesBD.BDSpectacles;
+import accesBD.BDTickets;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import modele.Categorie;
 import modele.Representation;
 import modele.Spectacle;
+import modele.Ticket;
 import modele.Utilisateur;
 import utils.Utilitaires;
 
@@ -44,6 +47,7 @@ public class NouvelleReservationServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		ServletOutputStream out = res.getOutputStream();
+		utils.Constantes.Home = getServletContext().getRealPath("/");
 
 		res.setContentType("text/html");
 
@@ -64,6 +68,7 @@ public class NouvelleReservationServlet extends HttpServlet {
 				Integer numS = null;
 				Date dateR = null;
 				String categorie = null;
+				String valid = null;
 				if (req.getParameter("spectacle") != null) {
 					numS = Integer.parseInt(req.getParameter("spectacle"));
 				}
@@ -73,82 +78,108 @@ public class NouvelleReservationServlet extends HttpServlet {
 				if (req.getParameter("categorie") != null) {
 					categorie = req.getParameter("categorie");
 				}
-
-				// choix du spectacle
-				List<Spectacle> spectacles = BDSpectacles.getSpectacle(user);
-
-				out.println("</ul>");
-				out.println("<p>");
-				out.print("<form action=\"");
-				out.print("NouvelleReservationServlet\" ");
-				out.println("method=GET>");
-				out.println("<table>");
-				out.println("<tr><td><label for=\"spectacle\">Spectacle :</label></td>");
-				if (spectacles.isEmpty()) {
-					out.println("<td><select id=\"spectacle\">");
-					out.println("<option>Aucun spectacle disponible</option>");
-				} else {
-					out.println("<td><select id=\"spectacle\" name=\"spectacle\" onchange=\"submit()\">");
-					for (Spectacle s : spectacles) {
-						if (numS != null && numS == s.getId()) {
-							out.println("<option selected=\"true\" value=\"" + s.getId() + "\">" + s.getNom() + "</option>");
-						} else {
-							out.println("<option value=\"" + s.getId() + "\">" + s.getNom() + "</option>");
-						}
-					}
+				if (req.getParameter("valid") != null) {
+					valid = req.getParameter("valid");
 				}
-				out.println("</select></td></tr>");
 
-				// choix de la représentation
-				if (numS != null) {
-					List<Representation> representations = BDRepresentations.getRepresentations(user, numS);
-					List<Categorie> categories = BDCategories.getCategorie(user);
+				if (valid != null && numS != null && dateR != null && categorie != null && valid.equals("true")) {
+					Ticket t = BDTickets.reserver(user, numS, dateR, categorie);
 
-					out.println("<tr><td><label for=\"dateR\">Date de représentation :</label></td>");
-					if (representations.isEmpty()) {
-						out.println("<td><select id=\"dateR\">");
-						out.println("<option>Aucune représentation disponible</option>");
+					if (t != null) {
+						out.println("<h3>Réservation effectuée</h3>");
+						out.println("<p>"
+								+ "Spectacle : " + BDSpectacles.getSpectacle(user, t.getNumS()).getNom() + "<br/>"
+								+ "Date : " + Utilitaires.toString(t.getDateRep()) + "<br/>"
+								+ "Place : " + t.getNoPlace() + "<br/>"
+								+ "Rang : " + t.getNoRang() + "<br/>"
+								+ "Prix : " + BDCategories.getCategorie(user, categorie).getPrix() + "<br/>"
+								+ "</p>");
 					} else {
-						out.println("<td><select id=\"dateR\" name=\"dateR\" onchange=\"submit()\">");
-						for (Representation r : representations) {
-							if (dateR != null && r.getDate().compareTo(dateR) == 0) {
-								out.println("<option selected=\"true\" value=\"" + Utilitaires.toStringBd(r.getDate()) + "\">" + Utilitaires.toString(r.getDate()) + "</option>");
-							} else {
-								out.println("<option value=\"" + Utilitaires.toStringBd(r.getDate()) + "\">" + Utilitaires.toString(r.getDate()) + "</option>");
-							}
-						}
-						out.println("</select></td></tr>");
+						out.println("<p>La réservation n'a pas pu être effectuée</p>");
+					}
+				} else {
+					// choix du spectacle
+					List<Spectacle> spectacles = BDSpectacles.getSpectacle(user);
 
-						out.println("<tr><td><label for=\"categorie\">Categorie :</label></td>");
-						if (categories.isEmpty()) {
-							out.println("<td><select id=\"categorie\">");
-							out.println("<option>Aucune catégorie disponible</option>");
-						} else {
-							out.println("<td><select id=\"categorie\" name=\"categorie\" onchange=\"submit()\">");
-							for (Categorie c : categories) {
-								//TODO inclure le nombre de places disponibles pour chaque catégorie
-								if (categorie != null && categorie.equals(c.getCategorie())) {
-									out.println("<option selected=\"true\" value=\"" + c.getCategorie() + "\">" + c.getCategorie() + " (" + c.getPrix() + "&euro;)</option>");
-								} else {
-									out.println("<option value=\"" + c.getCategorie() + "\">" + c.getCategorie() + " (" + c.getPrix() + "&euro;)</option>");
-								}
+					out.println("</ul>");
+					out.println("<p>");
+					out.print("<form action=\"");
+					out.print("NouvelleReservationServlet\" ");
+					out.println("method=GET>");
+					out.println("<input type=\"hidden\" id=\"valid\" name=\"valid\">");
+					out.println("<table>");
+					out.println("<tr><td><label for=\"spectacle\">Spectacle :</label></td>");
+					if (spectacles.isEmpty()) {
+						out.println("<td><select id=\"spectacle\">");
+						out.println("<option>Aucun spectacle disponible</option>");
+					} else {
+						out.println("<td><select id=\"spectacle\" name=\"spectacle\" onchange=\"submit()\">");
+						for (Spectacle s : spectacles) {
+							out.println("<option ");
+							if (numS != null && numS == s.getId()) {
+								out.print("selected=\"true\" ");
 							}
+							out.print("value=\"" + s.getId() + "\">" + s.getNom() + "</option>");
 						}
 					}
 					out.println("</select></td></tr>");
+
+					// choix de la représentation
+					if (numS != null) {
+						List<Representation> representations = BDRepresentations.getRepresentations(user, numS);
+						List<Categorie> categories = BDCategories.getCategorie(user);
+
+						out.println("<tr><td><label for=\"dateR\">Date de représentation :</label></td>");
+						if (representations.isEmpty()) {
+							out.println("<td><select id=\"dateR\">");
+							out.println("<option>Aucune représentation disponible</option>");
+						} else {
+							out.println("<td><select id=\"dateR\" name=\"dateR\" onchange=\"submit()\">");
+							for (Representation r : representations) {
+								out.println("<option ");
+								if (dateR != null && r.getDate().compareTo(dateR) == 0) {
+									out.print("selected=\"true\" ");
+								}
+								out.print("value=\"" + Utilitaires.toStringBd(r.getDate()) + "\">" + Utilitaires.toString(r.getDate()) + "</option>");
+							}
+							out.println("</select></td></tr>");
+
+							if (dateR != null) {
+								out.println("<tr><td><label for=\"categorie\">Categorie :</label></td>");
+								if (categories.isEmpty()) {
+									out.println("<td><select id=\"categorie\">");
+									out.println("<option>Aucune catégorie disponible</option>");
+								} else {
+									out.println("<td><select id=\"categorie\" name=\"categorie\" onchange=\"submit()\">");
+									for (Categorie c : categories) {
+										out.println("<option ");
+										if (categorie != null && categorie.equals(c.getCategorie())) {
+											out.print("selected=\"true\" ");
+										}
+										out.print("value=\"" + c.getCategorie() + "\">");
+										out.print(c.getCategorie() + " (" + c.getPrix() + "&euro;) : " + BDPlaces.getNbPlacesLibres(user, numS, dateR, c.getCategorie()) + " places disponibles");
+										out.print("</option>");
+									}
+								}
+								if (categorie != null) {
+									out.print("<input type=\"button\" value=\"Réserver une place\" onclick=\"this.form.valid.value='true';submit();\"/>");
+								}
+							}
+						}
+						out.println("</select></td></tr>");
+					}
+
+					out.println("<tr><td></td><td><input type=submit></td></tr>");
+					out.println("</table>");
+					out.println("</form>");
+
 				}
-
-				out.println("<tr><td></td><td><input type=submit></td></tr>");
-				out.println("</table>");
-				out.println("</form>");
-
-
 			}
 		} catch (Exception e) {
 			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + "</p>");
 		}
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("<hr/><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</body>");
 		out.println("</html>");
 		out.close();

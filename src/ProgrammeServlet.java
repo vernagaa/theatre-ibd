@@ -87,7 +87,7 @@ public class ProgrammeServlet extends HttpServlet {
 					Spectacle spec = BDSpectacles.getSpectacle(user, specId);
 					
 					if(spec != null) {
-						out.println("<h3>Représentations du spectacle "+spec.getNom()+" :</h3>");
+						out.println("<hr/><h3>Représentations du spectacle "+spec.getNom()+" :</h3>");
 						for (Representation r : representations) {
 							if(r.getSpectacle() == specId) {
 								out.println("<li><a href=\"/servlet/PlacesDispoServlet?date="+Utilitaires.toStringBd(r.getDate())+"&spectacle="+specId+"\">" + Utilitaires.toString(r.getDate()) + "</a></li>");
@@ -99,7 +99,7 @@ public class ProgrammeServlet extends HttpServlet {
 					List<Spectacle> spec = BDSpectacles.getSpectacle(user, Utilitaires.toDate(date, "dd-MM-yyyy HH:mm"));
 					
 					if(spec != null) {
-						out.println("<h3>Spectacles pour la date "+date+" :</h3>");
+						out.println("<hr/><h3>Spectacles pour la date "+date+" :</h3>");
 						for (Spectacle s : spec) {
 							out.println("<li><a href=\"?spectacle="+s.getId()+"\">" + s.getNom() + "</a></li>");
 						}
@@ -113,7 +113,7 @@ public class ProgrammeServlet extends HttpServlet {
 
 
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
+		out.println("<hr/><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
 		out.println("</body>");
 		out.println("<html>");
 		out.close();

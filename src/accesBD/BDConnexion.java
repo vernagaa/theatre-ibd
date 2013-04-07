@@ -1,18 +1,14 @@
 package accesBD;
+
+import exceptions.ExceptionConnexion;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
-import oracle.jdbc.pool.OracleDataSource;
-import exceptions.ExceptionConnexion;
-
 public final class BDConnexion {
 
-	public BDConnexion () {
-
-	}
 	/**
 	    * Obtenir une nouvelle connexion a la BD, en fonction des parametres
 	    * contenus dans un fichier de configuration.

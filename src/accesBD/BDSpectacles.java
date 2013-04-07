@@ -1,15 +1,13 @@
 package accesBD;
 
+import exceptions.ExceptionConnexion;
+import exceptions.SpectacleException;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import exceptions.SpectacleException;
-import exceptions.ExceptionConnexion;
-
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +16,6 @@ import modele.Utilisateur;
 
 public class BDSpectacles {
 
-	public BDSpectacles () {
-		
-	}
 	/**
 	 * retourne la liste des catégories définies dans la bd
 	 * @param Utilisateur
