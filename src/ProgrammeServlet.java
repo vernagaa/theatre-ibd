@@ -31,14 +31,14 @@ public class ProgrammeServlet extends HttpServlet {
 	/**
 	 * HTTP GET request entry point.
 	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
+	 * @param req	an HttpServletRequest object that contains the request the
+	 * client has made of the servlet
+	 * @param res	an HttpServletResponse object that contains the response the
+	 * servlet sends to the client
 	 *
-	 * @throws ServletException   if the request for the GET could not be handled
-	 * @throws IOException	   if an input or output error is detected 
-	 *					   when the servlet handles the GET request
+	 * @throws ServletException if the request for the GET could not be handled
+	 * @throws IOException	if an input or output error is detected when the
+	 * servlet handles the GET request
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -71,37 +71,45 @@ public class ProgrammeServlet extends HttpServlet {
 				List<Spectacle> spectacles = BDSpectacles.getSpectacle(user);
 				List<Representation> representations = BDRepresentations.getRepresentation(user);
 				for (Spectacle s : spectacles) {
-					out.println("<li><a href=\"?spectacle="+s.getId()+"\">" + s.getNom() + "</a></li>");
+					out.println("<li><a href=\"?spectacle=" + s.getId() + "\">" + s.getNom() + "</a></li>");
 				}
 				out.println("</ul>");
-				
+
 				out.println("<h3>Les représentations :</h3>");
 				out.println("<ul>");
 				for (Representation r : representations) {
-					out.println("<li><a href=\"?date="+Utilitaires.toStringBd(r.getDate())+"\">" + Utilitaires.toString(r.getDate()) + "</a></li>");
+					out.println("<li><a href=\"?date=" + Utilitaires.toStringBd(r.getDate()) + "\">" + Utilitaires.toString(r.getDate()) + "</a></li>");
 				}
 				out.println("</ul>");
-				
-				if(req.getParameter("spectacle") != null) {
+
+				if (req.getParameter("spectacle") != null) {
 					int specId = Integer.parseInt(req.getParameter("spectacle"));
 					Spectacle spec = BDSpectacles.getSpectacle(user, specId);
-					
-					if(spec != null) {
-						out.println("<hr/><h3>Représentations du spectacle "+spec.getNom()+" :</h3>");
+
+					if (spec != null) {
+						out.println("<hr/><h3>Représentations du spectacle " + spec.getNom() + " :</h3>");
+						boolean b = true;
 						for (Representation r : representations) {
-							if(r.getSpectacle() == specId) {
-								out.println("<li><a href=\"/servlet/PlacesDispoServlet?date="+Utilitaires.toStringBd(r.getDate())+"&spectacle="+specId+"\">" + Utilitaires.toString(r.getDate()) + "</a></li>");
+							if (r.getSpectacle() == specId) {
+								b = false;
+								out.println("<li>");
+								out.println("<a href=\"/servlet/PlacesDispoServlet?date=" + Utilitaires.toStringBd(r.getDate()) + "&spectacle=" + specId + "\">" + Utilitaires.toString(r.getDate()) + "</a>");
+								out.println("<a href=\"/servlet/NouvelleReservationServlet?dateR=" + Utilitaires.toStringBd(r.getDate()) + "&spectacle=" + specId + "\">[Réserver]</a>");
+								out.println("</li>");
 							}
 						}
+						if (b) {
+							out.println("<p><em>Aucune représentation</em></p>");
+						}
 					}
-				} else if(req.getParameter("date") != null) {
+				} else if (req.getParameter("date") != null) {
 					String date = req.getParameter("date");
 					List<Spectacle> spec = BDSpectacles.getSpectacle(user, Utilitaires.toDate(date, "dd-MM-yyyy HH:mm"));
-					
-					if(spec != null) {
-						out.println("<hr/><h3>Spectacles pour la date "+date+" :</h3>");
+
+					if (spec != null) {
+						out.println("<hr/><h3>Spectacles pour la date " + date + " :</h3>");
 						for (Spectacle s : spec) {
-							out.println("<li><a href=\"?spectacle="+s.getId()+"\">" + s.getNom() + "</a></li>");
+							out.println("<li><a href=\"?spectacle=" + s.getId() + "\">" + s.getNom() + "</a></li>");
 						}
 					}
 				}
@@ -123,14 +131,14 @@ public class ProgrammeServlet extends HttpServlet {
 	/**
 	 * HTTP POST request entry point.
 	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
+	 * @param req	an HttpServletRequest object that contains the request the
+	 * client has made of the servlet
+	 * @param res	an HttpServletResponse object that contains the response the
+	 * servlet sends to the client
 	 *
-	 * @throws ServletException   if the request for the POST could not be handled
-	 * @throws IOException	   if an input or output error is detected 
-	 *					   when the servlet handles the POST request
+	 * @throws ServletException if the request for the POST could not be handled
+	 * @throws IOException	if an input or output error is detected when the
+	 * servlet handles the POST request
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)

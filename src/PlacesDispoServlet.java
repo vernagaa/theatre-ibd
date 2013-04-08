@@ -28,14 +28,14 @@ public class PlacesDispoServlet extends HttpServlet {
 	/**
 	 * HTTP GET request entry point.
 	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
+	 * @param req	an HttpServletRequest object that contains the request the
+	 * client has made of the servlet
+	 * @param res	an HttpServletResponse object that contains the response the
+	 * servlet sends to the client
 	 *
-	 * @throws ServletException   if the request for the GET could not be handled
-	 * @throws IOException	   if an input or output error is detected 
-	 *					   when the servlet handles the GET request
+	 * @throws ServletException if the request for the GET could not be handled
+	 * @throws IOException	if an input or output error is detected when the
+	 * servlet handles the GET request
 	 */
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -73,13 +73,18 @@ public class PlacesDispoServlet extends HttpServlet {
 
 					if (repres != null && spectacle != null) {
 						out.println("<h3>Places disponibles pour la représentation du spectacle " + spectacle.getNom() + " (" + Utilitaires.toString(repres.getDate()) + ") :</h3>");
-						out.println("<ul>");
 
 						List<Place> places = BDPlaces.getPlacesLibres(user, specId, Utilitaires.toDate(date, "dd-MM-yyyy HH:mm"));
-						for (Place p : places) {
-							out.println("<li>place " + p.getNoPlace() + " rang " + p.getNoRang() + " zone " + p.getCategorie() + "</li>");
+						if (places.isEmpty()) {
+							out.println("<p><em>Aucune place disponible</em></p>");
+						} else {
+							out.println("<ul>");
+							for (Place p : places) {
+								out.println("<li>place " + p.getNoPlace() + " rang " + p.getNoRang() + " zone " + p.getCategorie() + "</li>");
+							}
+							out.println("</ul>");
 						}
-						out.println("</ul>");
+						out.println("<br/><p><font color=\"#FFFFFF\"><a href=\"/servlet/ProgrammeServlet?spectacle=" + specId + "\">Retour au programme</a></p>");
 					} else if (repres == null) {
 						out.println("<p>représentation nulle</p>");
 					}
@@ -105,14 +110,14 @@ public class PlacesDispoServlet extends HttpServlet {
 	/**
 	 * HTTP POST request entry point.
 	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
+	 * @param req	an HttpServletRequest object that contains the request the
+	 * client has made of the servlet
+	 * @param res	an HttpServletResponse object that contains the response the
+	 * servlet sends to the client
 	 *
-	 * @throws ServletException   if the request for the POST could not be handled
-	 * @throws IOException	   if an input or output error is detected 
-	 *					   when the servlet handles the POST request
+	 * @throws ServletException if the request for the POST could not be handled
+	 * @throws IOException	if an input or output error is detected when the
+	 * servlet handles the POST request
 	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)

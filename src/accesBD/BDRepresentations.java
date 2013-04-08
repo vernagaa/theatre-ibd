@@ -99,8 +99,8 @@ public class BDRepresentations {
 	
 	public static void addRepresentation(Utilisateur user, int numS, Date dateRep) throws ExceptionConnexion, RepresentationException {
 		String requete;
-		PreparedStatement stmt;
-		ResultSet rs;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		Connection conn = BDConnexion.getConnexion(user.getLogin(), user.getmdp());
 
 		requete = "insert into LesRepresentations values (?, ?)";
@@ -111,6 +111,7 @@ public class BDRepresentations {
 			
 			rs = stmt.executeQuery();
 		} catch (SQLException e) {
+			BDConnexion.FermerTout(conn, stmt, rs);
 			throw new RepresentationException(" Problème dans l'ajout de la représentation.."
 					+ "Code Oracle " + e.getErrorCode()
 					+ "Message " + e.getMessage());

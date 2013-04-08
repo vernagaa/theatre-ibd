@@ -56,6 +56,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		out.println("<style>"
 				+ "a {color: black; font-weight: bold;}"
 				+ "a:hover {color: red;}"
+				+ "body {color: white;}"
 				+ "</style>");
 		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
 		out.println("<h1> Ajouter une nouvelle repr&eacute;sentation</h1>");
@@ -75,8 +76,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 					out.print("NouvelleRepresentationServlet\" ");
 					out.println("method=POST>");
 
-					out.println("Num&eacute;ro de spectacle :");
-//					out.println("<input type=text size=20 name=numS>");
+					out.println("Spectacle :");
 					if (spectacles.isEmpty()) {
 						out.println("<select id=\"numS\">");
 						out.println("<option>Aucun spectacle disponible</option>");
@@ -88,13 +88,13 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 					}
 					out.println("</select>");
 
-					out.println("<br>");
+					out.println("<br/>");
 					out.println("Date de la repr&eacute;sentation (jj-mm-aaaa) :");
 					out.println("<input type=text size=20 name=date>");
-					out.println("<br>");
+					out.println("<br/>");
 					out.println("Heure de d&eacute;but de la repr&eacute;sentation (hh:mm) :");
 					out.println("<input type=text size=20 name=heure>");
-					out.println("<br>");
+					out.println("<br/>");
 					out.println("<input type=submit>");
 					out.println("</form>");
 				} else {
@@ -102,17 +102,11 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 					// Transformation des paramètres vers les types adéquats.
 					// Ajout de la nouvelle représentation.
 					// Puis construction dynamique d'une page web de réponse.
-					out.println("<p><i><font color=\"#FFFFFF\">A compl&eacute;ter</i></p>");
-					out.println("<p><i><font color=\"#FFFFFF\">...</i></p>");
-
-					out.println("<h3>Les spectacles :</h3>");
-					out.println("<ul>");
 					int num = Integer.parseInt(numS);
 					Date d = Utilitaires.toDate(dateS + " " + heureS, "dd-MM-yyyy HH:mm");
 					BDRepresentations.addRepresentation(user, num, d);
 
 					out.println("<p>Représentation ajoutée</p>");
-//					out.println("<p><i><font color=\"#FFFFFF\">...</i></p>");
 
 				}
 			}

@@ -105,7 +105,7 @@ public class NouvelleReservationServlet extends HttpServlet {
 					out.println("<p>");
 					out.print("<form action=\"");
 					out.print("NouvelleReservationServlet\" ");
-					out.println("method=GET>");
+					out.println("method=\"get\">");
 					out.println("<input type=\"hidden\" id=\"valid\" name=\"valid\">");
 					out.println("<table>");
 					out.println("<tr><td><label for=\"spectacle\">Spectacle :</label></td>");
@@ -126,6 +126,7 @@ public class NouvelleReservationServlet extends HttpServlet {
 
 					// choix de la représentation
 					if (numS != null) {
+						//TODO afficher les représentation à venir uniquement
 						List<Representation> representations = BDRepresentations.getRepresentations(user, numS);
 						List<Categorie> categories = BDCategories.getCategorie(user);
 
@@ -162,7 +163,10 @@ public class NouvelleReservationServlet extends HttpServlet {
 									}
 								}
 								if (categorie != null) {
-									out.print("<input type=\"button\" value=\"Réserver une place\" onclick=\"this.form.valid.value='true';submit();\"/>");
+									out.print("<input type=\"button\""
+											+ " value=\"Réserver une place\""
+											+ " onclick=\"this.form.valid.value='true';this.form.method='post';submit();\""
+											+ "/>");
 								}
 							}
 						}

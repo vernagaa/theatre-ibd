@@ -89,6 +89,54 @@ public class BDPlaces {
 		return res;
 	}
 
+	public static Place getPlaceLibre(Utilisateur user, int numS, Date dateRep, String nomC) throws PlaceException, ExceptionConnexion {
+		Place res = null;
+		String requete ;
+		PreparedStatement stmt ;
+		ResultSet rs ;
+		Connection conn = BDConnexion.getConnexion(user.getLogin(), user.getmdp());
+
+		requete ="select * from ( "
+				+ "select noPlace, noRang "
+				+ "from LesZones natural join LesPlaces "
+				+ "where (noPlace, noRang) "
+				+ "not in ( "
+				+ "select noPlace, noRang "
+				+ "from LesTickets "
+				+ "where dateRep=? "
+				+ "and numS=? "
+				+ "and nomC=? "
+				+ ") "
+				+ "and nomC=? "
+				+ "order by noRang, noPlace "
+				+ ") "
+				+ "where ROWNUM = 1";
+		try {
+			stmt = conn.prepareStatement(requete);
+			stmt.setTimestamp(1, new Timestamp(dateRep.getTime()));
+			stmt.setInt(2, numS);
+			stmt.setString(3, nomC);
+			stmt.setString(4, nomC);
+			
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				res = new Place (rs.getInt(1), rs.getInt(2), nomC);
+			}
+		} catch (SQLException e) {
+//			String stack = "";
+//			for (StackTraceElement st : e.getStackTrace()) {
+//				stack += "<br/>"+st.toString();
+//			}
+			throw new PlaceException (" Problème dans l'interrogation des Places.."
+					+ "Code Oracle " + e.getErrorCode()
+					+ "Message " + e.getMessage()
+//					+ stack
+					);
+		}
+		BDConnexion.FermerTout(conn, stmt, rs);
+		return res;
+	}
+
 	public static int getNbPlacesLibres(Utilisateur user, int numS, Date dateRep, String nomC) throws PlaceException, ExceptionConnexion {
 		int res = 0;
 		String requete ;
