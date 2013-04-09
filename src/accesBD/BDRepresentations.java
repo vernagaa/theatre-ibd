@@ -97,15 +97,15 @@ public class BDRepresentations {
 		return res;
 	}
 	
-	public static void addRepresentation(Utilisateur user, int numS, Date dateRep) throws ExceptionConnexion, RepresentationException, SQLException {
+	public static void addRepresentation(Utilisateur user, int numS, Date dateRep) throws ExceptionConnexion, RepresentationException {
 		String requete;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Connection conn = BDConnexion.getConnexion(user.getLogin(), user.getmdp());
-		conn.setAutoCommit(false);
 
 		requete = "insert into LesRepresentations values (?, ?)";
 		try {
+			conn.setAutoCommit(false);
 			stmt = conn.prepareStatement(requete);
 			stmt.setInt(1, numS);
 			stmt.setTimestamp(2, new Timestamp(dateRep.getTime()));

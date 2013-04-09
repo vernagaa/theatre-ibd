@@ -29,7 +29,16 @@ public class Caddie {
 	}
 
 	public void removeReservation(Representation repres, Categorie categ) {
-		Reservation res = new Reservation(repres, categ, 0);
+		removeReservation(new Reservation(repres, categ, 0));
+	}
+
+	public void removeReservation(Reservation res) {
 		resa.remove(res);
+	}
+
+	public void removeReservations(List<Reservation> valide) {
+		for (Reservation r : valide) {
+			removeReservation(r);
+		}
 	}
 }

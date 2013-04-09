@@ -97,6 +97,7 @@ public class NouvelleReservationServlet extends HttpServlet {
 					} else {
 						out.println("<p>La réservation n'a pas pu être effectuée</p>");
 					}
+					out.println("<p><a href=\"NouvelleReservationServlet\">Retour aux réservations</a></p>");
 				} else {
 					// choix du spectacle
 					List<Spectacle> spectacles = BDSpectacles.getSpectacle(user);

@@ -159,7 +159,7 @@ public class ProgrammeServlet extends HttpServlet {
 										+ "<input type=\"submit\" value=\"Ajouter au caddie\">"
 										+ "</form>");
 								if(valid && resa != null && resa.getRepres().getSpectacle() == r.getSpectacle() && resa.getRepres().getDate().equals(r.getDate())) {
-									out.println("<span style=\"color: red;\">Ajouté au <a href=\"/servlet/CaddieServlet\">panier</a></span>");
+									out.println("<span style=\"color: red;\">Ajouté au <a href=\"/servlet/CaddieServlet\">caddie</a></span>");
 								}
 								out.println("</li>");
 							}

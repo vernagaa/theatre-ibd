@@ -98,7 +98,6 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 					out.println("<input type=submit>");
 					out.println("</form>");
 				} else {
-					// TO DO
 					// Transformation des paramètres vers les types adéquats.
 					// Ajout de la nouvelle représentation.
 					// Puis construction dynamique d'une page web de réponse.
@@ -107,7 +106,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 					BDRepresentations.addRepresentation(user, num, d);
 
 					out.println("<p>Représentation ajoutée</p>");
-
+					out.println("<p><a href=\"NouvelleRepresentationServlet\">Retour au formulaire</a></p>");
 				}
 			}
 		} catch (Exception e) {
