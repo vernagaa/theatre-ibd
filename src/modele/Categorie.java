@@ -25,4 +25,14 @@ public class Categorie {
 	public void setPrix (float p) {
 		this.prix = p;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Categorie))
+			return false;
+		
+		return categorie.equals(((Categorie)obj).categorie);
+	}
+	
+	
 }

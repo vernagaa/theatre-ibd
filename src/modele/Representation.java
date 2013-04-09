@@ -32,5 +32,12 @@ public class Representation {
 		this.date = date;
 	}
 
-	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Representation))
+			return false;
+		
+		Representation obj2 = (Representation)obj;
+		return spectacle == obj2.spectacle && date.equals(obj2.date);
+	}
 }

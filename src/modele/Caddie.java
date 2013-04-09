@@ -1,64 +1,23 @@
 package modele;
 
-import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Caddie {
 
-	public static class Reservation {
+	private List<Reservation> resa = new ArrayList<Reservation>();
 
-		private Representation repres;
-		private Categorie categ;
-		private int nbPlaces;
-
-		public Reservation(Representation repres, Categorie categ, int nbPlaces) {
-			this.repres = repres;
-			this.categ = categ;
-			this.nbPlaces = nbPlaces;
+	public Reservation addReservation(Representation r, Categorie c, int nbPlaces) {
+		Reservation res = new Reservation(r, c, nbPlaces);
+		if (resa.contains(res)) {
+			resa.get(resa.indexOf(res)).addPlaces(nbPlaces);
+		} else {
+			resa.add(res);
 		}
-
-		public Categorie getCateg() {
-			return categ;
-		}
-
-		public void setCateg(Categorie categ) {
-			this.categ = categ;
-		}
-
-		public int getNbPlaces() {
-			return nbPlaces;
-		}
-
-		public void setNbPlaces(int nbPlaces) {
-			this.nbPlaces = nbPlaces;
-		}
-
-		public Representation getRepres() {
-			return repres;
-		}
-
-		public void setRepres(Representation repres) {
-			this.repres = repres;
-		}
-
-		public float getPrixTotal() {
-			return nbPlaces * categ.getPrix();
-		}
-	}
-	private Set<Reservation> resa = new HashSet<Reservation>();
-
-	public Caddie() {
-		//TODO supprimer caddie initialisé
-		addReservation(new Representation(104, new Timestamp(584565)), new Categorie("categname", 25), 5);
+		return res;
 	}
 
-	
-	public void addReservation(Representation r, Categorie c, int nbPlaces) {
-		resa.add(new Reservation(r, c, nbPlaces));
-	}
-
-	public Set<Reservation> getReservations() {
+	public List<Reservation> getReservations() {
 		return resa;
 	}
 }

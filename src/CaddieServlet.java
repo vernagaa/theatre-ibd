@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Caddie;
+import modele.Reservation;
 import modele.Utilisateur;
 import utils.Utilitaires;
 
@@ -26,13 +27,13 @@ public class CaddieServlet extends HttpServlet {
 		//Get the output stream
 		ServletOutputStream out = res.getOutputStream();
 		utils.Constantes.Home = getServletContext().getRealPath("/");
-		
+
 		res.setContentType("text/html");
 
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
-		out.println("<head><title> Ajouter une nouvelle représentation </title></head>");
+		out.println("<head><title>Votre caddie</title></head>");
 		out.println("<style>"
 				+ "a {color: black; font-weight: bold;}"
 				+ "a:hover {color: red;}"
@@ -61,13 +62,17 @@ public class CaddieServlet extends HttpServlet {
 					out.println("<th>Nombre</th>");
 					out.println("<th>Total</th>");
 					out.println("</tr>");
-					for (Caddie.Reservation r : caddie.getReservations()) {
+					for (Reservation r : caddie.getReservations()) {
 						out.println("<tr>");
-						out.println("<td>"+BDSpectacles.getSpectacle(user, r.getRepres().getSpectacle()).getNom()+"</td>");
-						out.println("<td>"+Utilitaires.toString(r.getRepres().getDate())+"</td>");
-						out.println("<td>"+r.getCateg().getCategorie()+"</td>");
-						out.println("<td>"+r.getNbPlaces()+"</td>");
-						out.println("<td>"+r.getPrixTotal()+"&euro;</td>");
+						out.println("<td>" + BDSpectacles.getSpectacle(user, r.getRepres().getSpectacle()).getNom() + "</td>");
+						out.println("<td>" + Utilitaires.toString(r.getRepres().getDate()) + "</td>");
+						out.println("<td>" + r.getCateg().getCategorie() + "</td>");
+						out.println("<td>"
+								+ "<form action=\"CaddieServlet\" method=\"post\">"
+								+ "<input type=\"text\" name=\"nbPlaces\" value=\"" + r.getNbPlaces() + "\" />"
+								+ "</form>"
+								+ "</td>");
+						out.println("<td>" + r.getPrixTotal() + "&euro;</td>");
 						out.println("</tr>");
 					}
 					out.println("</table>");
