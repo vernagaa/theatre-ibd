@@ -136,6 +136,55 @@ public class BDPlaces {
 		BDConnexion.FermerTout(conn, stmt, rs);
 		return res;
 	}
+	
+	public static List<Place> getPlaceLibre(Utilisateur user, int numS, Date dateRep, String nomC, int n) throws PlaceException, ExceptionConnexion {
+		List<Place> res = new LinkedList<Place>();
+		String requete ;
+		PreparedStatement stmt ;
+		ResultSet rs ;
+		Connection conn = BDConnexion.getConnexion(user.getLogin(), user.getmdp());
+
+		requete ="select * from ( "
+				+ "select noPlace, noRang "
+				+ "from LesZones natural join LesPlaces "
+				+ "where (noPlace, noRang) "
+				+ "not in ( "
+				+ "select noPlace, noRang "
+				+ "from LesTickets "
+				+ "where dateRep=? "
+				+ "and numS=? "
+				+ "and nomC=? "
+				+ ") "
+				+ "and nomC=? "
+				+ "order by noRang, noPlace "
+				+ ") "
+				+ "where ROWNUM <= ?";
+		try {
+			stmt = conn.prepareStatement(requete);
+			stmt.setTimestamp(1, new Timestamp(dateRep.getTime()));
+			stmt.setInt(2, numS);
+			stmt.setString(3, nomC);
+			stmt.setString(4, nomC);
+			stmt.setInt(5, n);
+			
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				res.add(new Place (rs.getInt(1), rs.getInt(2), nomC));
+			}
+		} catch (SQLException e) {
+//			String stack = "";
+//			for (StackTraceElement st : e.getStackTrace()) {
+//				stack += "<br/>"+st.toString();
+//			}
+			throw new PlaceException (" Problème dans l'interrogation des Places.."
+					+ "Code Oracle " + e.getErrorCode()
+					+ "Message " + e.getMessage()
+//					+ stack
+					);
+		}
+		BDConnexion.FermerTout(conn, stmt, rs);
+		return res;
+	}
 
 	public static int getNbPlacesLibres(Utilisateur user, int numS, Date dateRep, String nomC) throws PlaceException, ExceptionConnexion {
 		int res = 0;
