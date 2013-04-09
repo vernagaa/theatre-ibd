@@ -97,11 +97,12 @@ public class BDRepresentations {
 		return res;
 	}
 	
-	public static void addRepresentation(Utilisateur user, int numS, Date dateRep) throws ExceptionConnexion, RepresentationException {
+	public static void addRepresentation(Utilisateur user, int numS, Date dateRep) throws ExceptionConnexion, RepresentationException, SQLException {
 		String requete;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Connection conn = BDConnexion.getConnexion(user.getLogin(), user.getmdp());
+		conn.setAutoCommit(false);
 
 		requete = "insert into LesRepresentations values (?, ?)";
 		try {
@@ -110,6 +111,7 @@ public class BDRepresentations {
 			stmt.setTimestamp(2, new Timestamp(dateRep.getTime()));
 			
 			rs = stmt.executeQuery();
+			conn.commit();
 		} catch (SQLException e) {
 			BDConnexion.FermerTout(conn, stmt, rs);
 			throw new RepresentationException(" Problème dans l'ajout de la représentation.."

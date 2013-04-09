@@ -15,8 +15,7 @@ import modele.Utilisateur;
 
 public class BDTickets {
 
-	public static Ticket reserver(Utilisateur user, Integer numS, Date dateR, String categorie) throws TicketException, ExceptionConnexion {
-		//TODO transaction
+	public static Ticket reserver(Utilisateur user, Integer numS, Date dateR, String categorie) throws TicketException, ExceptionConnexion, SQLException {
 		int noDossier;
 		int noSerie;
 		String r1, r2, r3, r4;
@@ -25,6 +24,7 @@ public class BDTickets {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Connection conn = BDConnexion.getConnexion(user.getLogin(), user.getmdp());
+		conn.setAutoCommit(false);
 
 		r1 = "select max(noDossier) from LesDossiers";
 		r2 = "select max(noSerie) from LesTickets";
@@ -58,7 +58,6 @@ public class BDTickets {
 			} else {
 				noSerie = 1;
 			}
-//			stmt.close();
 
 			// nouveau dossier
 			stmt = conn.prepareStatement(r3);
@@ -75,6 +74,7 @@ public class BDTickets {
 			stmt.setInt(5, place.getNoRang());
 			stmt.setInt(6, noDossier);
 			rs = stmt.executeQuery();
+			conn.commit();
 		} catch (SQLException e) {
 			BDConnexion.FermerTout(conn, stmt, rs);
 			throw new TicketException(" Problème dans l'interrogation des Tickets.."

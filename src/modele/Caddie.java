@@ -9,8 +9,9 @@ public class Caddie {
 
 	public Reservation addReservation(Representation r, Categorie c, int nbPlaces) {
 		Reservation res = new Reservation(r, c, nbPlaces);
-		if (resa.contains(res)) {
-			resa.get(resa.indexOf(res)).addPlaces(nbPlaces);
+		int i = resa.indexOf(res);
+		if (i != -1) {
+			resa.get(i).addPlaces(nbPlaces);
 		} else {
 			resa.add(res);
 		}
@@ -23,11 +24,12 @@ public class Caddie {
 
 	public Reservation getReservation(Representation repres, Categorie categ) {
 		Reservation res = new Reservation(repres, categ, 0);
-		//FIXME
-		return resa.get(resa.indexOf(res));
+		int i = resa.indexOf(res);
+		return i == -1 ? null : resa.get(i);
 	}
 
 	public void removeReservation(Representation repres, Categorie categ) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		Reservation res = new Reservation(repres, categ, 0);
+		resa.remove(res);
 	}
 }

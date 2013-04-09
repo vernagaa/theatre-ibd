@@ -7,6 +7,7 @@ import accesBD.BDRepresentations;
 import accesBD.BDSpectacles;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -55,6 +56,8 @@ public class CaddieServlet extends HttpServlet {
 				Date date = null;
 				Integer nbPlaces = null;
 				String categorie = req.getParameter("categorie");
+				String messageModif = null;
+				String messageSuppr = null;
 
 				if (caddie == null) {
 					caddie = new Caddie();
@@ -69,23 +72,24 @@ public class CaddieServlet extends HttpServlet {
 					nbPlaces = Integer.parseInt(req.getParameter("nbPlaces"));
 				}
 
-				if (spectacle != null && date != null && categorie != null && nbPlaces == null) {
-					// suppression
+				if (spectacle != null && date != null && categorie != null) {
 					Representation repres = BDRepresentations.getRepresentation(user, spectacle, date);
 					Categorie categ = BDCategories.getCategorie(user, categorie);
 					if (repres != null && categ != null) {
-						caddie.removeReservation(repres, categ);
-						session.setAttribute("caddie", caddie);
-					}
-				} else if (spectacle != null && date != null && categorie != null && nbPlaces != null && nbPlaces <= 1) {
-					// màj du nombre de places
-					Representation repres = BDRepresentations.getRepresentation(user, spectacle, date);
-					Categorie categ = BDCategories.getCategorie(user, categorie);
-					if (repres != null && categ != null) {
-						caddie.getReservation(repres, categ).setNbPlaces(nbPlaces);
-						session.setAttribute("caddie", caddie);
+						if (nbPlaces == null) {
+							// suppression
+							caddie.removeReservation(repres, categ);
+							session.setAttribute("caddie", caddie);
+							messageSuppr = "Supprimé";
+						} else if (nbPlaces >= 1) {
+							// màj du nombre de places
+							caddie.getReservation(repres, categ).setNbPlaces(nbPlaces);
+							session.setAttribute("caddie", caddie);
+							messageModif = "Modifié";
+						}
 					}
 				}
+
 
 				if (caddie.getReservations().isEmpty()) {
 					out.println("<p><em>Votre caddie est vide</em></p>");
@@ -97,6 +101,7 @@ public class CaddieServlet extends HttpServlet {
 					out.println("<th>Catégorie</th>");
 					out.println("<th>Nombre</th>");
 					out.println("<th>Total</th>");
+					out.println("<th></th>");
 					out.println("</tr>");
 					for (Reservation r : caddie.getReservations()) {
 						out.println("<tr>");
@@ -121,9 +126,15 @@ public class CaddieServlet extends HttpServlet {
 								+ "<input type=\"submit\" value=\"Supprimer\"/>"
 								+ "</form>"
 								+ "</td>");
+						out.println("<td style=\"color: red;\">" + (messageModif != null && r.equals(new Reservation(
+								new Representation(spectacle, new Timestamp(date.getTime())),
+								new Categorie(categorie, 0), nbPlaces)) ? messageModif : "") + "</td>");
 						out.println("</tr>");
 					}
 					out.println("</table>");
+					if (messageSuppr != null) {
+						out.println("<p style=\"color: red;\">" + messageSuppr + "</p>");
+					}
 				}
 
 			}
@@ -134,6 +145,7 @@ public class CaddieServlet extends HttpServlet {
 			}
 			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + o + "</p>");
 		}
+
 		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</body>");
 		out.println("</html>");
