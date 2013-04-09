@@ -181,11 +181,7 @@ public class ProgrammeServlet extends HttpServlet {
 
 			}
 		} catch (Exception e) {
-			String o = "";
-			for (StackTraceElement st : e.getStackTrace()) {
-				o+="<br/>"+st;
-			}
-			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + o + "</p>");
+			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + "</p>");
 		}
 
 

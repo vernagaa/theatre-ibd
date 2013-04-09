@@ -20,4 +20,14 @@ public class Caddie {
 	public List<Reservation> getReservations() {
 		return resa;
 	}
+
+	public Reservation getReservation(Representation repres, Categorie categ) {
+		Reservation res = new Reservation(repres, categ, 0);
+		//FIXME
+		return resa.get(resa.indexOf(res));
+	}
+
+	public void removeReservation(Representation repres, Categorie categ) {
+		throw new UnsupportedOperationException("Not yet implemented");
+	}
 }

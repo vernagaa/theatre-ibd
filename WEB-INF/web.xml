@@ -5,66 +5,100 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
    version="2.5">
 
-  <display-name>Servlets</display-name>
-  <description> Servlets </description>- 
+	<display-name>Servlets</display-name>
+	<description> Servlets </description>- 
 
 <!-- 
  Define servlets that are included in the Theater application 
 --> 
 
 
-- <servlet> 
-<servlet-name>ProgrammeServlet</servlet-name> 
-<servlet-class>ProgrammeServlet</servlet-class> 
-</servlet>
+- 
+	<servlet> 
+		<servlet-name>ProgrammeServlet</servlet-name> 
+		<servlet-class>ProgrammeServlet</servlet-class> 
+	</servlet>
 
-- <servlet> 
-<servlet-name>NouvelleRepresentationServlet</servlet-name> 
-<servlet-class>NouvelleRepresentationServlet</servlet-class> 
-</servlet>
+- 
+	<servlet> 
+		<servlet-name>NouvelleRepresentationServlet</servlet-name> 
+		<servlet-class>NouvelleRepresentationServlet</servlet-class> 
+	</servlet>
 
-- <servlet> 
-<servlet-name>NouvelleReservationServlet</servlet-name> 
-<servlet-class>NouvelleReservationServlet</servlet-class> 
-</servlet>
+- 
+	<servlet> 
+		<servlet-name>NouvelleReservationServlet</servlet-name> 
+		<servlet-class>NouvelleReservationServlet</servlet-class> 
+	</servlet>
 
-- <servlet> 
-<servlet-name>PlacesDispoServlet</servlet-name> 
-<servlet-class>PlacesDispoServlet</servlet-class> 
-</servlet>
+- 
+	<servlet> 
+		<servlet-name>PlacesDispoServlet</servlet-name> 
+		<servlet-class>PlacesDispoServlet</servlet-class> 
+	</servlet>
 
-- <servlet> 
-<servlet-name>CaddieServlet</servlet-name> 
-<servlet-class>CaddieServlet</servlet-class> 
-</servlet>
-
-
-
-
-- <servlet-mapping> 
-<servlet-name>ProgrammeServlet</servlet-name> 
-<url-pattern>/servlet/ProgrammeServlet</url-pattern> 
-</servlet-mapping>
-
-- <servlet-mapping> 
-<servlet-name>NouvelleRepresentationServlet</servlet-name> 
-<url-pattern>/servlet/NouvelleRepresentationServlet</url-pattern> 
-</servlet-mapping>
-
-- <servlet-mapping> 
-<servlet-name>NouvelleReservationServlet</servlet-name> 
-<url-pattern>/servlet/NouvelleReservationServlet</url-pattern> 
-</servlet-mapping>
-
-- <servlet-mapping> 
-<servlet-name>PlacesDispoServlet</servlet-name> 
-<url-pattern>/servlet/PlacesDispoServlet</url-pattern> 
-</servlet-mapping>
-
-- <servlet-mapping> 
-<servlet-name>CaddieServlet</servlet-name> 
-<url-pattern>/servlet/CaddieServlet</url-pattern> 
-</servlet-mapping>
+- 
+	<servlet> 
+		<servlet-name>CaddieServlet</servlet-name> 
+		<servlet-class>CaddieServlet</servlet-class> 
+	</servlet>
 
 
+
+
+- 
+	<servlet-mapping> 
+		<servlet-name>ProgrammeServlet</servlet-name> 
+		<url-pattern>/servlet/ProgrammeServlet</url-pattern> 
+	</servlet-mapping>
+
+- 
+	<servlet-mapping> 
+		<servlet-name>NouvelleRepresentationServlet</servlet-name> 
+		<url-pattern>/servlet/NouvelleRepresentationServlet</url-pattern> 
+	</servlet-mapping>
+
+- 
+	<servlet-mapping> 
+		<servlet-name>NouvelleReservationServlet</servlet-name> 
+		<url-pattern>/servlet/NouvelleReservationServlet</url-pattern> 
+	</servlet-mapping>
+
+- 
+	<servlet-mapping> 
+		<servlet-name>PlacesDispoServlet</servlet-name> 
+		<url-pattern>/servlet/PlacesDispoServlet</url-pattern> 
+	</servlet-mapping>
+
+- 
+	<servlet-mapping> 
+		<servlet-name>CaddieServlet</servlet-name> 
+		<url-pattern>/servlet/CaddieServlet</url-pattern> 
+	</servlet-mapping>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>user-resource</web-resource-name>
+			<description>pages which require admin rights</description>
+			<url-pattern>/admin/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Must authenticate before querying the system</description>
+			<role-name>admin</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>default</realm-name>
+	</login-config>
+	<security-role>
+		<description>Any user of the system</description>
+		<role-name>admin</role-name>
+	</security-role>
+ 
 </web-app>
