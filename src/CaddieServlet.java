@@ -6,7 +6,6 @@ import accesBD.BDCategories;
 import accesBD.BDRepresentations;
 import accesBD.BDSpectacles;
 import accesBD.BDTickets;
-import exceptions.TicketException;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -43,15 +42,19 @@ public class CaddieServlet extends HttpServlet {
 
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
+		out.println("<head>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
-		out.println("<head><title>Votre caddie</title></head>");
+		out.println("<title> Votre caddie </title>");
 		out.println("<style>"
+				+ "body {color: darkslategray; background-image: radial-gradient(white, darkred 90%, black); padding: 20px;}"
+				+ "div {width: 1000px; min-height: 1000px; margin: auto; }"
 				+ "a {color: black; font-weight: bold;}"
 				+ "a:hover {color: red;}"
-				+ "body {color: white;}"
 				+ "</style>");
-		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
-		out.println("<h1>Votre caddie</h1>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<div>");
+		out.println("<h1> Votre caddie </h1>");
 
 		try {
 			Utilisateur user = Utilitaires.Identification();
@@ -194,9 +197,10 @@ public class CaddieServlet extends HttpServlet {
 			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + o + "</p>");
 		}
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("<hr/><p><a href=\"/index.html\">Accueil</a></p>");
+		out.println("</div>");
 		out.println("</body>");
-		out.println("</html>");
+		out.println("<html>");
 		out.close();
 	}
 

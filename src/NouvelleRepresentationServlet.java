@@ -51,15 +51,19 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
+		out.println("<head>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
-		out.println("<head><title> Ajouter une nouvelle représentation </title></head>");
+		out.println("<title> Ajouter une nouvelle représentation </title>");
 		out.println("<style>"
+				+ "body {color: darkslategray; background-image: radial-gradient(white, darkred 90%, black); padding: 20px;}"
+				+ "div {width: 1000px; min-height: 1000px; margin: auto; }"
 				+ "a {color: black; font-weight: bold;}"
 				+ "a:hover {color: red;}"
-				+ "body {color: white;}"
 				+ "</style>");
-		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
-		out.println("<h1> Ajouter une nouvelle repr&eacute;sentation</h1>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<div>");
+		out.println("<h1> Ajouter une nouvelle représentation </h1>");
 
 		try {
 			Utilisateur user = Utilitaires.Identification();
@@ -113,10 +117,11 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + "</p>");
 		}
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("<hr/><p><a href=\"/admin/admin.html\">Page d'administration</a></p>");
+		out.println("<hr/><p><a href=\"/index.html\">Accueil</a></p>");
+		out.println("</div>");
 		out.println("</body>");
-		out.println("</html>");
+		out.println("<html>");
 		out.close();
 
 	}

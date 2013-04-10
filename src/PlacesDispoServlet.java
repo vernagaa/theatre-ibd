@@ -45,17 +45,22 @@ public class PlacesDispoServlet extends HttpServlet {
 		utils.Constantes.Home = getServletContext().getRealPath("/");
 
 		res.setContentType("text/html");
-
+		
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
+		out.println("<head>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
-		out.println("<head><title> Programme de la saison </title></head>");
+		out.println("<title> Places disponibles </title>");
 		out.println("<style>"
+				+ "body {color: darkslategray; background-image: radial-gradient(white, darkred 90%, black); padding: 20px;}"
+				+ "div {width: 1000px; min-height: 1000px; margin: auto; }"
 				+ "a {color: black; font-weight: bold;}"
 				+ "a:hover {color: red;}"
 				+ "</style>");
-		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
-		out.println("<font color=\"#FFFFFF\"><h1> Programme de la saison </h1>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<div>");
+		out.println("<h1> Places disponibles </h1>");
 
 		// Ecrire une nouvelle servlet qui permet de consulter l'ensemble
 		// des places disponibles pour une représentation donnée, chaque place étant décrite par
@@ -99,8 +104,9 @@ public class PlacesDispoServlet extends HttpServlet {
 
 
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/servlet/ProgrammeServlet\">Programme</a></p>");
+		out.println("<hr/><p><a href=\"/index.html\">Accueil</a></p>");
+		out.println("<hr/><p><a href=\"/servlet/ProgrammeServlet\">Programme</a></p>");
+		out.println("</div>");
 		out.println("</body>");
 		out.println("<html>");
 		out.close();

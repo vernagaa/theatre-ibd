@@ -60,16 +60,20 @@ public class ProgrammeServlet extends HttpServlet {
 
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
+		out.println("<head>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
-		out.println("<head><title> Programme de la saison </title></head>");
+		out.println("<title> Programme de la saison </title>");
 		out.println("<style>"
+				+ "body {color: darkslategray; background-image: radial-gradient(white, darkred 90%, black); padding: 20px;}"
+				+ "div {width: 1000px; min-height: 1000px; margin: auto; }"
 				+ "a {color: black; font-weight: bold;}"
 				+ "a:hover {color: red;}"
 				+ "</style>");
-		out.println("<body bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
-		out.println("<font color=\"#FFFFFF\"><h1> Programme de la saison </h1>");
+		out.println("</head>");
+		out.println("<body");
+		out.println("<div>");
+		out.println("<h1> Programme de la saison </h1>");
 
-		// TO DO
 		// Récupération de la liste de tous les spectacles de la saison.
 		// Puis construction dynamique d'une page web décrivant ces spectacles.
 
@@ -188,7 +192,8 @@ public class ProgrammeServlet extends HttpServlet {
 
 
 
-		out.println("<hr/><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
+		out.println("<hr/><p><a href=\"/index.html\">Accueil</a></p>");
+		out.println("</div>");
 		out.println("</body>");
 		out.println("<html>");
 		out.close();
