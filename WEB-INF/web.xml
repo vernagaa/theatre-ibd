@@ -16,7 +16,8 @@
 - 
 	<servlet> 
 		<servlet-name>ProgrammeServlet</servlet-name> 
-		<servlet-class>ProgrammeServlet</servlet-class> 
+		<!--<servlet-class>ProgrammeServlet</servlet-class>--> 
+		<jsp-file>/programme.jsp</jsp-file>
 	</servlet>
 
 - 

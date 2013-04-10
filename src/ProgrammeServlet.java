@@ -56,6 +56,8 @@ public class ProgrammeServlet extends HttpServlet {
 
 		res.setContentType("text/html");
 
+//		req.getRequestDispatcher("/programme.jsp").include(req, res);
+
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
 		out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=ISO-8859-1\" />");
@@ -158,7 +160,7 @@ public class ProgrammeServlet extends HttpServlet {
 								out.println("<input type=\"text\" name=\"nbPlaces\" value=\"1\"/>"
 										+ "<input type=\"submit\" value=\"Ajouter au caddie\">"
 										+ "</form>");
-								if(valid && resa != null && resa.getRepres().getSpectacle() == r.getSpectacle() && resa.getRepres().getDate().equals(r.getDate())) {
+								if (valid && resa != null && resa.getRepres().getSpectacle() == r.getSpectacle() && resa.getRepres().getDate().equals(r.getDate())) {
 									out.println("<span style=\"color: red;\">Ajouté au <a href=\"/servlet/CaddieServlet\">caddie</a></span>");
 								}
 								out.println("</li>");
