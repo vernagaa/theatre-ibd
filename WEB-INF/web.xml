@@ -41,7 +41,8 @@
 - 
 	<servlet> 
 		<servlet-name>CaddieServlet</servlet-name> 
-		<servlet-class>CaddieServlet</servlet-class> 
+<!--		<servlet-class>CaddieServlet</servlet-class> -->
+		<jsp-file>/caddie.jsp</jsp-file>
 	</servlet>
 
 
