@@ -56,7 +56,7 @@
 - 
 	<servlet-mapping> 
 		<servlet-name>NouvelleRepresentationServlet</servlet-name> 
-		<url-pattern>/servlet/NouvelleRepresentationServlet</url-pattern> 
+		<url-pattern>/admin/servlet/NouvelleRepresentationServlet</url-pattern> 
 	</servlet-mapping>
 
 - 
