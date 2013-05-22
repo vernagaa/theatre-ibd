@@ -89,7 +89,7 @@ public class PlacesDispoServlet extends HttpServlet {
 							}
 							out.println("</ul>");
 						}
-						out.println("<br/><p><font color=\"#FFFFFF\"><a href=\"/servlet/ProgrammeServlet?spectacle=" + specId + "\">Retour au programme</a></p>");
+						out.println("<br/><p><a href=\"/servlet/ProgrammeServlet?spectacle=" + specId + "\">Retour au programme</a></p>");
 					} else if (repres == null) {
 						out.println("<p>représentation nulle</p>");
 					}
@@ -99,7 +99,7 @@ public class PlacesDispoServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + "</p>");
+			out.println("<p><i>Erreur de connexion à la base de données</i><br/>" + e + "</p>");
 		}
 
 

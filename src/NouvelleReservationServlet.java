@@ -186,7 +186,7 @@ public class NouvelleReservationServlet extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			out.println("<p><i><font color=\"#FFFFFF\">Erreur de connexion à la base de données</i><br/>" + e + "</p>");
+			out.println("<p><i>Erreur de connexion à la base de données</i><br/>" + e + "</p>");
 		}
 
 		out.println("<hr/><p><a href=\"/index.html\">Accueil</a></p>");
